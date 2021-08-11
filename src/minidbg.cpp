@@ -1,5 +1,7 @@
 #include <iostream>
+#include <vector>
 #include <string>
+#include <sstream>
 #include <unistd.h>
 #include <sys/ptrace.h>
 #include <sys/wait.h>
@@ -9,6 +11,17 @@
 
 using namespace minidbg;
 
+std::vector<std::string> split(const std::string &s, char delimiter) {
+    std::vector<std::string> out{};
+    std::stringstream ss {s};
+    std::string item;
+
+    while (std::getline(ss, item, delimiter)) {
+        out.push_back(item);
+    }
+
+    return out;
+}
 
 void debugger::run() {
     int wait_status;
