@@ -9,4 +9,4 @@ add_executable(minidbg src/minidbg.cpp)
 
 # libdwarf++ and libelf++ installed from libelfin via package manager
 # liblinenoise installed via linenoise-git AUR package
-target_link_libraries(minidbg liblinenoise libdwarf++ libelf++)
+target_link_libraries(minidbg -llinenoise -ldwarf++ -lelf++)
