@@ -1,2 +1,2 @@
 # minidbg
-A basic Linux bugger. From the tutorial series "Writing a Linux Debugger" by Sy Brand (@TartanLlama)
+A basic Linux bugger. Created by following the tutorial series ["Writing a Linux Debugger"](https://blog.tartanllama.xyz/writing-a-linux-debugger-setup/) by Sy Brand ([@TartanLlama](https://github.com/TartanLlama))
