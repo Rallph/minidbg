@@ -23,6 +23,14 @@ std::vector<std::string> split(const std::string &s, char delimiter) {
     return out;
 }
 
+bool is_prefix(const std::string &s, const std::string &of) {
+    if (s.size() > of.size()) {
+        return false;
+    }
+
+    return std::equal(s.begin(), s.end(), of.begin());
+}
+
 void debugger::run() {
     int wait_status;
     auto options = 0;
