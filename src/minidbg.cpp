@@ -44,6 +44,14 @@ void debugger::run() {
     }
 }
 
+void debugger::continue_execution() {
+    ptrace(PTRACE_CONT, m_pid, nullptr, nullptr);
+
+    int wait_status;
+    auto options = 0;
+    waitpid(m_pid, &wait_status, options);
+}
+
 void execute_debugee(const std::string& program_name) {
     if (ptrace(PTRACE_TRACEME, 0, nullptr, nullptr) < 0) {
         std::cerr << "Error in ptrace\n";
