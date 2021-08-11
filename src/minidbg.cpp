@@ -9,13 +9,6 @@
 
 using namespace minidbg;
 
-void execute_debugee(const std::string& program_name) {
-    if (ptrace(PTRACE_TRACEME, 0, nullptr, nullptr) < 0) {
-        std::cerr << "Error in ptrace\n";
-        return;
-    }
-    execl(program_name.c_str(), program_name.c_str(), nullptr);
-}
 
 void debugger::run() {
     int wait_status;
@@ -30,6 +23,13 @@ void debugger::run() {
     }
 }
 
+void execute_debugee(const std::string& program_name) {
+    if (ptrace(PTRACE_TRACEME, 0, nullptr, nullptr) < 0) {
+        std::cerr << "Error in ptrace\n";
+        return;
+    }
+    execl(program_name.c_str(), program_name.c_str(), nullptr);
+}
 
 int main(int argc, char* argv[]) {
 
