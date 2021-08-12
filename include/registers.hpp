@@ -6,6 +6,7 @@
 #include <string> // not sure why this needs to be included when the original tutorial doesn't but otherwise std::string is undefined
 #include <array> // same for this
 #include <sys/ptrace.h>
+#include <stdexcept>
 
 
 namespace minidbg {
@@ -79,6 +80,16 @@ namespace minidbg {
         // same process as getting register value, but replace the value we get for the register with the value we're trying to set
         *(reinterpret_cast<uint64_t*>(&regs) + (it - begin(g_register_descriptors))) = value;
         ptrace(PTRACE_SETREGS, pid, nullptr, &regs); // use PTRACE_SETREGS to set all the value of all the registers (including the one we just changed)
+    }
+
+    uint64_t get_register_value_from_dwarf_register(pid_t pid, unsigned regnum) {
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [regnum](auto&& rd) { return rd.dwarf == regnum; });
+
+        if (it == end(g_register_descriptors)) {
+            throw std::out_of_range{"Unknown dwarf register"};
+        }
+
+        return get_register_value(pid, it->r);
     }
 }
 
