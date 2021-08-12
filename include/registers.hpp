@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <string> // not sure why this needs to be included when the original tutorial doesn't but otherwise std::string is undefined
 #include <array> // same for this
+#include <sys/ptrace.h>
 
 
 namespace minidbg {
@@ -58,7 +59,17 @@ namespace minidbg {
             { reg::fs, 54, "fs" },
             { reg::gs, 55, "gs" },
     }};
+    
+    uint64_t get_register_value(pid_t pid, reg r) {
+        user_regs_struct regs;
+        ptrace(PTRACE_GETREGS, pid, nullptr, &regs); // ptrace gets the registers from the process, puts them into regs
 
+        // search g_register_descriptors for the descriptor with the same dwarf number as the register we want, return it
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.dwarf_r == r; });
+
+        // get the offset of our desired register from the global table, add it to regs address, cast to uint64_t pointer and dereference to get value
+        return *(reinterpret_cast<uint64_t*>(&regs) + (it - begin(g_register_descriptors)));
+    }
 }
 
 
