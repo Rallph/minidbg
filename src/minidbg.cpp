@@ -7,7 +7,7 @@
 #include <sys/wait.h>
 #include <linenoise.h>
 #include <iomanip>
-#include <sys/personality.h>>
+#include <sys/personality.h>
 
 #include "debugger.hpp"
 #include "registers.hpp"
