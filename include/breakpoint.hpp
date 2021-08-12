@@ -28,6 +28,14 @@ namespace minidbg {
                 m_enabled = true;
             }
 
+            void disable() {
+                auto data = ptrace(PTRACE_PEEKDATA, m_pid, m_addr, nullptr); // get word at breakpoint address
+                auto restored_data = ((data & ~0xff) | m_saved_data); // clear int3 instruction from word and replace with saved original instruction
+                ptrace(PTRACE_POKEDATA, m_pid, m_addr, restored_data); // copy restored word back into process memory
+
+                m_enabled = false;
+            }
+
     };
 }
 
