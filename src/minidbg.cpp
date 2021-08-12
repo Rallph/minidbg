@@ -31,6 +31,20 @@ bool is_prefix(const std::string &s, const std::string &of) {
     return std::equal(s.begin(), s.end(), of.begin());
 }
 
+void debugger::handle_command(const std::string& line) {
+    auto args = split(line, ' ');
+    auto command = args[0];
+
+    if (is_prefix(command, "cont")) {
+        continue_execution();
+    } else if (is_prefix(command, "break")) {
+        std::string addr {args[1], 2}; // removes first two characters, assuming user wrote 0xADDRESS
+        set_breakpoint_at_address(std::stol(addr, nullptr, 16)); // stol with radix 16 converts address from string to hexadecimal integer
+    } else {
+        std::cerr << "Unknown command\n";
+    }
+}
+
 void debugger::set_breakpoint_at_address(std::intptr_t addr) {
     std::cout << "Set breakpoint at address 0x" << std::hex << addr << std::endl;
     breakpoint bp {m_pid, addr};
