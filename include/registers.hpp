@@ -70,6 +70,16 @@ namespace minidbg {
         // get the offset of our desired register from the global table, add it to regs address, cast to uint64_t pointer and dereference to get value
         return *(reinterpret_cast<uint64_t*>(&regs) + (it - begin(g_register_descriptors)));
     }
+
+    void set_register_value(pid_t pid, reg r, uint64_t value) {
+        user_regs_struct regs;
+        ptrace(PTRACE_GETREGS, pid, nullptr, &regs);
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.r == r; });
+
+        // same process as getting register value, but replace the value we get for the register with the value we're trying to set
+        *(reinterpret_cast<uint64_t*>(&regs) + (it - begin(g_register_descriptors))) = value;
+        ptrace(PTRACE_SETREGS, pid, nullptr, &regs); // use PTRACE_SETREGS to set all the value of all the registers (including the one we just changed)
+    }
 }
 
 
