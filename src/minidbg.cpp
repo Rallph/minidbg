@@ -13,6 +13,14 @@
 
 using namespace minidbg;
 
+uint64_t debugger::get_pc() {
+    return get_register_value(m_pid, reg::rip);
+}
+
+void debugger::set_pc(uint64_t pc) {
+    set_register_value(m_pid, reg::rip, pc);
+}
+
 uint64_t debugger::read_memory(uint64_t address) {
     return ptrace(PTRACE_PEEKDATA, m_pid, address, nullptr);
 }

@@ -21,6 +21,9 @@ namespace minidbg {
             auto read_memory(uint64_t address) -> uint64_t;
             void write_memory(uint64_t address, uint64_t value);
 
+            auto get_pc() -> uint64_t;
+            void set_pc(uint64_t);
+
         public:
             debugger(std::string prog_name, pid_t pid)
                 : m_prog_name{std::move(prog_name)}, m_pid{pid} {}
