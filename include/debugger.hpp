@@ -18,6 +18,9 @@ namespace minidbg {
             void handle_command(const std::string& line);
             void continue_execution();
 
+            auto read_memory(uint64_t address) -> uint64_t;
+            void write_memory(uint64_t address, uint64_t value);
+
         public:
             debugger(std::string prog_name, pid_t pid)
                 : m_prog_name{std::move(prog_name)}, m_pid{pid} {}
