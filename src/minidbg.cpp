@@ -76,7 +76,7 @@ void debugger::run() {
 
     char* line = nullptr;
     while ((line = linenoise("minidbg> ")) != nullptr) {
-        // handle command
+        handle_command(line);
         linenoiseHistoryAdd(line);
         linenoiseFree(line);
     }
