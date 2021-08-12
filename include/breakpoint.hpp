@@ -36,6 +36,10 @@ namespace minidbg {
                 m_enabled = false;
             }
 
+            bool is_enabled() const { return m_enabled; }
+
+            auto get_address() const -> std::intptr_t { return m_addr; } // not sure why arrow is used here. couldnt easily find by googling
+
     };
 }
 
