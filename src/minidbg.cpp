@@ -48,6 +48,15 @@ void debugger::handle_command(const std::string& line) {
     } else if (is_prefix(command, "break")) {
         std::string addr {args[1], 2}; // removes first two characters, assuming user wrote 0xADDRESS
         set_breakpoint_at_address(std::stol(addr, nullptr, 16)); // stol with radix 16 converts address from string to hexadecimal integer
+    } else if (is_prefix(command, "register")) {
+        if (is_prefix(args[1], "dump")) {
+            dump_registers();
+        } else if (is_prefix(args[1], "read")) {
+            std::cout << get_register_value(m_pid, get_register_from_name(args[2])) << std::endl;
+        } else if (is_prefix(args[1], "write")) {
+            std::string val {args[3], 2}; // cut off first two characters, assuming its 0xVAL
+            set_register_value(m_pid, get_register_from_name(args[2]), std::stol(val, 0, 16));
+        }
     } else {
         std::cerr << "Unknown command\n";
     }
