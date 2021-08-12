@@ -13,6 +13,14 @@
 
 using namespace minidbg;
 
+uint64_t debugger::read_memory(uint64_t address) {
+    return ptrace(PTRACE_PEEKDATA, m_pid, address, nullptr);
+}
+
+void debugger::write_memory(uint64_t address, uint64_t value) {
+    ptrace(PTRACE_POKEDATA, m_pid, address, value);
+}
+
 void debugger::dump_registers() {
     for (const auto& rd: g_register_descriptors) {
         std::cout << rd.name << " 0x" << std::setfill('0') << std::setw(16) << std::hex << get_register_value(m_pid, rd.r) << std::endl;
