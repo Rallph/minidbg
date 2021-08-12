@@ -66,7 +66,7 @@ namespace minidbg {
         ptrace(PTRACE_GETREGS, pid, nullptr, &regs); // ptrace gets the registers from the process, puts them into regs
 
         // search g_register_descriptors for the descriptor with the same dwarf number as the register we want, return it
-        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.dwarf_r == r; });
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.r == r; });
 
         // get the offset of our desired register from the global table, add it to regs address, cast to uint64_t pointer and dereference to get value
         return *(reinterpret_cast<uint64_t*>(&regs) + (it - begin(g_register_descriptors)));
@@ -83,7 +83,7 @@ namespace minidbg {
     }
 
     uint64_t get_register_value_from_dwarf_register(pid_t pid, unsigned regnum) {
-        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [regnum](auto&& rd) { return rd.dwarf == regnum; });
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [regnum](auto&& rd) { return rd.dwarf_r == regnum; });
 
         if (it == end(g_register_descriptors)) {
             throw std::out_of_range{"Unknown dwarf register"};
@@ -93,7 +93,7 @@ namespace minidbg {
     }
 
     std::string get_register_name(reg r) {
-        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.name == name });
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [r](auto&& rd) { return rd.r == r; });
 
         return it->name;
     }
