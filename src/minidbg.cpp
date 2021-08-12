@@ -7,6 +7,7 @@
 #include <sys/wait.h>
 #include <linenoise.h>
 #include <iomanip>
+#include <sys/personality.h>>
 
 #include "debugger.hpp"
 #include "registers.hpp"
@@ -163,7 +164,9 @@ int main(int argc, char* argv[]) {
     auto pid = fork();
     if (pid == 0) {
         // we're in child process
-        // execute debugee
+        // stupid me never realized execute_debugee() was never called
+        personality(ADDR_NO_RANDOMIZE);
+        execute_debugee(program_name);
     } else if (pid >= 1) {
         // we're in parent process
         // execute debugger
