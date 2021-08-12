@@ -97,6 +97,12 @@ namespace minidbg {
 
         return it->name;
     }
+
+    reg get_register_from_name(const std::string& name) {
+        auto it = std::find_if(begin(g_register_descriptors), end(g_register_descriptors), [name](auto&& rd) { return rd.name == name; });
+
+        return it->r;
+    }
 }
 
 
