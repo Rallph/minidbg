@@ -6,10 +6,18 @@
 #include <sys/ptrace.h>
 #include <sys/wait.h>
 #include <linenoise.h>
+#include <iomanip>
 
 #include "debugger.hpp"
+#include "registers.hpp"
 
 using namespace minidbg;
+
+void debugger::dump_registers() {
+    for (const auto& rd: g_register_descriptors) {
+        std::cout << rd.name << " 0x" << std::setfill('0') << std::setw(16) << std::hex << get_register_value(m_pid, rd.r) << std::endl;
+    }
+}
 
 std::vector<std::string> split(const std::string &s, char delimiter) {
     std::vector<std::string> out{};
