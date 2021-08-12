@@ -23,6 +23,8 @@ namespace minidbg {
 
             auto get_pc() -> uint64_t;
             void set_pc(uint64_t);
+            void step_over_breakpoint();
+            void wait_for_signal();
 
         public:
             debugger(std::string prog_name, pid_t pid)
