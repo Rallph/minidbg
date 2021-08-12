@@ -31,6 +31,13 @@ bool is_prefix(const std::string &s, const std::string &of) {
     return std::equal(s.begin(), s.end(), of.begin());
 }
 
+void debugger::set_breakpoint_at_address(std::intptr_t addr) {
+    std::cout << "Set breakpoint at address 0x" << std::hex << addr << std::endl;
+    breakpoint bp {m_pid, addr};
+    bp.enable();
+    m_breakpoints[addr] = bp;
+}
+
 void debugger::run() {
     int wait_status;
     auto options = 0;
