@@ -31,6 +31,8 @@ namespace minidbg {
             void step_over_breakpoint();
             void wait_for_signal();
 
+            auto get_function_from_pc(uint64_t pc) -> dwarf::die;
+
         public:
             debugger(std::string prog_name, pid_t pid)
                 : m_prog_name{std::move(prog_name)}, m_pid{pid} {

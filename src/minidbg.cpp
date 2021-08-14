@@ -14,6 +14,20 @@
 
 using namespace minidbg;
 
+dwarf::die debugger::get_function_from_pc(uint64_t pc) {
+    for (auto &cu : m_dwarf.compilation_units()) {
+        if (die_pc_range(cu.root()).contains(pc)) {
+            for (const auto& die : cu.root()) {
+                if (die.tag == dwarf::DW_TAG::subprogram) {
+                    if (die_pc_range(die).contains(pc)) {
+                        return die;
+                    }
+                }
+            }
+        }
+    }
+}
+
 void debugger::step_over_breakpoint() {
     // -1 because execution will go past breakpoint
     auto possible_breakpoint_location = get_pc() - 1;
