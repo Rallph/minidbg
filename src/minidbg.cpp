@@ -26,6 +26,8 @@ dwarf::die debugger::get_function_from_pc(uint64_t pc) {
             }
         }
     }
+
+    throw std::out_of_range{"Cannot find function"};
 }
 
 void debugger::step_over_breakpoint() {
